@@ -1,7 +1,5 @@
 """
-Graph Visualization Module
-
-This module provides visualization of the city graph with the optimal path highlighted.
+Graph visualization for the city and paths
 """
 
 import networkx as nx
@@ -9,27 +7,14 @@ import matplotlib.pyplot as plt
 from graph.city_graph import CityGraph
 
 class GraphVisualizer:
-    """
-    Visualizes the city graph and highlights the optimal path.
-    """
+    """Draws the city graph with paths"""
 
     def __init__(self, graph: CityGraph):
-        """
-        Initialize the visualizer with a city graph.
-
-        Args:
-            graph: The city graph to visualize
-        """
+        """Setup with city graph"""
         self.graph = graph
 
     def draw_graph(self, ucs_path: list = None, astar_path: list = None):
-        """
-        Draw the city graph with charging stations and the optimal paths highlighted.
-
-        Args:
-            ucs_path: The UCS path to highlight (optional)
-            astar_path: The A* path to highlight (optional)
-        """
+        """Draw city graph with paths"""
         # Suppress matplotlib warnings
         import warnings
         warnings.filterwarnings("ignore", category=UserWarning, module="matplotlib")

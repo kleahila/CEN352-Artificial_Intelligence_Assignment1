@@ -1,8 +1,5 @@
 """
-Search Algorithms Implementation
-
-This module implements Uniform Cost Search (UCS) and A* Search algorithms
-for the Electric Vehicle routing problem.
+UCS and A* search algorithms for EV routing
 """
 
 import heapq
@@ -13,19 +10,10 @@ from graph.city_graph import CityGraph
 from utils.performance import SearchResult
 
 class SearchAlgorithm(ABC):
-    """
-    Abstract base class for search algorithms.
-    """
+    """Base class for search algorithms"""
 
     def __init__(self, graph: CityGraph, start: str, initial_battery: float):
-        """
-        Initialize the search algorithm.
-
-        Args:
-            graph: The city graph
-            start: Starting node
-            initial_battery: Initial battery capacity in km
-        """
+        """Setup search with graph, start node, and battery"""
         self.graph = graph
         self.start = start
         self.initial_battery = initial_battery
@@ -42,54 +30,22 @@ class SearchAlgorithm(ABC):
         pass
 
     def _is_valid_move(self, current_battery: float, distance: float) -> bool:
-        """
-        Check if a move is valid given current battery and distance.
-
-        Args:
-            current_battery: Current battery level
-            distance: Distance to travel
-
-        Returns:
-            True if the move is valid, False otherwise
-        """
+        """Check if move is possible with current battery"""
         return distance <= current_battery
 
     def _is_goal(self, node: str) -> bool:
-        """
-        Check if a node is a goal (charging station).
-
-        Args:
-            node: The node to check
-
-        Returns:
-            True if the node is a charging station, False otherwise
-        """
+        """Check if node is a charging station"""
         return self.graph.is_charging_station(node)
 
 class UniformCostSearch(SearchAlgorithm):
-    """
-    Uniform Cost Search implementation for EV routing.
-    Expands nodes in order of increasing path cost to find closest charging station.
-    """
+    """UCS - finds path by expanding lowest cost first"""
 
     def __init__(self, graph: CityGraph, start: str, initial_battery: float):
-        """
-        Initialize Uniform Cost Search.
-
-        Args:
-            graph: The city graph
-            start: Starting node
-            initial_battery: Initial battery capacity in km
-        """
+        """Setup UCS search"""
         super().__init__(graph, start, initial_battery)
 
     def search(self) -> SearchResult:
-        """
-        Perform Uniform Cost Search to find closest charging station.
-
-        Returns:
-            SearchResult with the optimal path and statistics
-        """
+        """Run UCS to find closest charging station"""
         start_time = time.perf_counter()
 
         # Priority queue: (cost, node, battery, path)
@@ -127,29 +83,14 @@ class UniformCostSearch(SearchAlgorithm):
         return SearchResult([], float('inf'), nodes_expanded, runtime)
 
 class AStarSearch(SearchAlgorithm):
-    """
-    A* Search implementation for EV routing.
-    Uses f(n) = g(n) + h(n) where h(n) is the distance to closest charging station.
-    """
+    """A* search - uses heuristic to find path faster"""
 
     def __init__(self, graph: CityGraph, start: str, initial_battery: float):
-        """
-        Initialize A* Search.
-
-        Args:
-            graph: The city graph
-            start: Starting node
-            initial_battery: Initial battery capacity in km
-        """
+        """Setup A* search"""
         super().__init__(graph, start, initial_battery)
 
     def search(self) -> SearchResult:
-        """
-        Perform A* Search to find closest charging station.
-
-        Returns:
-            SearchResult with the optimal path and statistics
-        """
+        """Run A* to find closest charging station"""
         start_time = time.perf_counter()
 
         # Priority queue: (f_cost, g_cost, node, battery, path)

@@ -1,22 +1,15 @@
 """
-City Graph Implementation
-
-This module defines the CityGraph class that represents the synthetic city
-with nodes, edges, and coordinates for the EV routing problem.
+City graph for the EV routing problem
 """
 
 import math
 from typing import Dict, List, Tuple, Set
 
 class CityGraph:
-    """
-    Represents the city graph with nodes, edges, and coordinates.
-
-    Not all nodes are charging stations - only specific ones are.
-    """
+    """City graph with nodes, edges, and charging stations"""
 
     def __init__(self):
-        """Initialize the city graph with nodes, edges, coordinates, and charging stations."""
+        """Setup the city graph with all the connections"""
         # Graph edges: {node: [(neighbor, distance), ...]}
         self.graph: Dict[str, List[Tuple[str, float]]] = {
             'A': [('B', 3.6), ('C', 5.1)],
@@ -51,54 +44,21 @@ class CityGraph:
         self.charging_stations: Set[str] = {'C', 'E', 'G', 'I', 'K'}
 
     def neighbors(self, node: str) -> List[Tuple[str, float]]:
-        """
-        Get the neighbors of a node with their distances.
-
-        Args:
-            node: The node to get neighbors for
-
-        Returns:
-            List of (neighbor, distance) tuples
-        """
+        """Get neighbors of a node"""
         return self.graph.get(node, [])
 
     def heuristic(self, node: str, goal: str) -> float:
-        """
-        Calculate the Euclidean distance heuristic from node to goal.
-
-        Args:
-            node: Current node
-            goal: Goal node
-
-        Returns:
-            Euclidean distance between the nodes
-        """
+        """Straight line distance between two nodes"""
         x1, y1 = self.coords[node]
         x2, y2 = self.coords[goal]
         return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
 
     def is_charging_station(self, node: str) -> bool:
-        """
-        Check if a node is a charging station.
-
-        Args:
-            node: The node to check
-
-        Returns:
-            True if the node is a charging station, False otherwise
-        """
+        """Check if node is a charging station"""
         return node in self.charging_stations
 
     def get_closest_charging_station_heuristic(self, node: str) -> float:
-        """
-        Calculate heuristic to closest charging station (minimum Euclidean distance).
-
-        Args:
-            node: Current node
-
-        Returns:
-            Minimum Euclidean distance to any charging station
-        """
+        """Distance to nearest charging station"""
         if self.is_charging_station(node):
             return 0.0
 

@@ -1,8 +1,5 @@
 """
-Performance Tracking Utilities
-
-This module provides utilities for tracking search algorithm performance
-and defines the SearchResult dataclass.
+Search result tracking
 """
 
 import time
@@ -11,30 +8,14 @@ from typing import List
 
 @dataclass
 class SearchResult:
-    """
-    Data class to store search algorithm results.
-
-    Attributes:
-        path: List of nodes in the path from start to goal
-        cost: Total cost of the path
-        nodes_expanded: Number of nodes expanded during search
-        runtime: Execution time in seconds
-    """
-    path: List[str]
-    cost: float
-    nodes_expanded: int
-    runtime: float
+    """Stores results from search algorithms"""
+    path: List[str]  # Path from start to goal
+    cost: float      # Total distance
+    nodes_expanded: int  # How many nodes checked
+    runtime: float   # Time taken in seconds
 
 def time_function(func):
-    """
-    Decorator to measure the execution time of a function.
-
-    Args:
-        func: The function to time
-
-    Returns:
-        The wrapped function that returns (result, execution_time)
-    """
+    """Timer decorator for functions"""
     def wrapper(*args, **kwargs):
         start_time = time.perf_counter()
         result = func(*args, **kwargs)

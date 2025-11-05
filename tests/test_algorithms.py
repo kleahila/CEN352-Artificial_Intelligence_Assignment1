@@ -1,5 +1,5 @@
 """
-Comprehensive unit tests for the search algorithms.
+Tests for the search algorithms
 """
 
 import unittest
@@ -7,15 +7,15 @@ from graph.city_graph import CityGraph
 from search.algorithms import UniformCostSearch, AStarSearch
 
 class TestSearchAlgorithms(unittest.TestCase):
-    """Comprehensive test cases for search algorithms."""
+    """Test the search algorithms"""
 
     def setUp(self):
-        """Set up test fixtures."""
+        """Setup for tests"""
         self.graph = CityGraph()
         self.start = 'A'
 
     def test_ucs_finds_path_normal_battery(self):
-        """Test that UCS finds a valid path with normal battery (6.0 km)."""
+        """UCS should find path with normal battery"""
         battery = 6.0
         ucs = UniformCostSearch(self.graph, self.start, battery)
         result = ucs.search()
@@ -28,7 +28,7 @@ class TestSearchAlgorithms(unittest.TestCase):
         self.assertGreater(result.nodes_expanded, 0)
 
     def test_astar_finds_path_normal_battery(self):
-        """Test that A* finds a valid path with normal battery (6.0 km)."""
+        """A* should find path with normal battery"""
         battery = 6.0
         astar = AStarSearch(self.graph, self.start, battery)
         result = astar.search()
@@ -41,7 +41,7 @@ class TestSearchAlgorithms(unittest.TestCase):
         self.assertGreater(result.nodes_expanded, 0)
 
     def test_ucs_finds_path_high_battery(self):
-        """Test UCS with high battery capacity (10.0 km)."""
+        """UCS with high battery"""
         battery = 10.0
         ucs = UniformCostSearch(self.graph, self.start, battery)
         result = ucs.search()
@@ -51,7 +51,7 @@ class TestSearchAlgorithms(unittest.TestCase):
         self.assertLessEqual(result.cost, battery)  # Cost should not exceed battery
 
     def test_astar_finds_path_high_battery(self):
-        """Test A* with high battery capacity (10.0 km)."""
+        """A* with high battery"""
         battery = 10.0
         astar = AStarSearch(self.graph, self.start, battery)
         result = astar.search()
@@ -61,7 +61,7 @@ class TestSearchAlgorithms(unittest.TestCase):
         self.assertLessEqual(result.cost, battery)
 
     def test_ucs_finds_path_low_battery(self):
-        """Test UCS with low battery capacity (4.0 km) - should find longer path."""
+        """UCS with low battery - longer path"""
         battery = 4.0
         ucs = UniformCostSearch(self.graph, self.start, battery)
         result = ucs.search()
@@ -72,7 +72,7 @@ class TestSearchAlgorithms(unittest.TestCase):
         self.assertGreater(len(result.path), 2)  # Should be more than direct path
 
     def test_astar_finds_path_low_battery(self):
-        """Test A* with low battery capacity (4.0 km) - should find longer path."""
+        """A* with low battery - longer path"""
         battery = 4.0
         astar = AStarSearch(self.graph, self.start, battery)
         result = astar.search()
@@ -82,7 +82,7 @@ class TestSearchAlgorithms(unittest.TestCase):
         self.assertGreater(len(result.path), 2)
 
     def test_impossible_battery_scenario(self):
-        """Test with very low battery (2.0 km) - should find no path."""
+        """Very low battery - no path found"""
         battery = 2.0
         ucs = UniformCostSearch(self.graph, self.start, battery)
         astar = AStarSearch(self.graph, self.start, battery)
@@ -97,7 +97,7 @@ class TestSearchAlgorithms(unittest.TestCase):
         self.assertEqual(astar_result.cost, float('inf'))
 
     def test_path_validity_ucs(self):
-        """Test that UCS found paths are valid according to graph constraints."""
+        """Check UCS paths are valid"""
         battery = 6.0
         ucs = UniformCostSearch(self.graph, self.start, battery)
         result = ucs.search()
@@ -105,7 +105,7 @@ class TestSearchAlgorithms(unittest.TestCase):
         self._validate_path(result.path)
 
     def test_path_validity_astar(self):
-        """Test that A* found paths are valid according to graph constraints."""
+        """Check A* paths are valid"""
         battery = 6.0
         astar = AStarSearch(self.graph, self.start, battery)
         result = astar.search()
@@ -113,7 +113,7 @@ class TestSearchAlgorithms(unittest.TestCase):
         self._validate_path(result.path)
 
     def test_battery_constraint_enforcement(self):
-        """Test that battery constraints are properly enforced."""
+        """Check battery limits are followed"""
         battery = 5.0
         ucs = UniformCostSearch(self.graph, self.start, battery)
         astar = AStarSearch(self.graph, self.start, battery)
@@ -135,7 +135,7 @@ class TestSearchAlgorithms(unittest.TestCase):
                             break
 
     def test_algorithm_efficiency_comparison(self):
-        """Test that A* generally expands fewer nodes than UCS."""
+        """A* should expand fewer nodes than UCS"""
         battery = 6.0
         ucs = UniformCostSearch(self.graph, self.start, battery)
         astar = AStarSearch(self.graph, self.start, battery)
@@ -147,7 +147,7 @@ class TestSearchAlgorithms(unittest.TestCase):
         self.assertLessEqual(astar_result.nodes_expanded, ucs_result.nodes_expanded)
 
     def test_charging_station_reachability(self):
-        """Test that all charging stations are reachable with sufficient battery."""
+        """All charging stations should be reachable"""
         battery = 15.0  # High battery to ensure reachability
         ucs = UniformCostSearch(self.graph, self.start, battery)
         astar = AStarSearch(self.graph, self.start, battery)
@@ -164,14 +164,14 @@ class TestSearchAlgorithms(unittest.TestCase):
         self.assertTrue(self.graph.is_charging_station(astar_result.path[-1]))
 
     def test_graph_connectivity(self):
-        """Test that the graph is properly connected."""
+        """Graph should be connected"""
         # Test that all nodes have neighbors
         for node in self.graph.coords.keys():
             neighbors = self.graph.neighbors(node)
             self.assertGreater(len(neighbors), 0, f"Node {node} has no neighbors")
 
     def test_charging_stations_exist(self):
-        """Test that charging stations are properly defined."""
+        """Charging stations should exist"""
         self.assertGreater(len(self.graph.charging_stations), 0, "No charging stations defined")
 
         # Verify all charging stations exist in the graph
@@ -179,7 +179,7 @@ class TestSearchAlgorithms(unittest.TestCase):
             self.assertIn(station, self.graph.coords, f"Charging station {station} not in graph")
 
     def _validate_path(self, path):
-        """Helper method to validate path constraints."""
+        """Helper to check if path is valid"""
         if not path:
             return  # Empty path is valid (no solution)
 

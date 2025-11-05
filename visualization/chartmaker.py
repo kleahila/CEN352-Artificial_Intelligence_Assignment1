@@ -1,25 +1,15 @@
 """
-Performance Chart Maker
-
-This module creates performance comparison charts for UCS vs A* search.
+Makes performance charts for the search algorithms
 """
 
 import matplotlib.pyplot as plt
 from utils.performance import SearchResult
 
 class ChartMaker:
-    """
-    Creates performance comparison charts between search algorithms.
-    """
+    """Makes charts comparing UCS and A*"""
 
     def compare_performance(self, ucs_result: SearchResult, astar_result: SearchResult):
-        """
-        Create a comparison chart showing nodes expanded, runtime, and cost.
-
-        Args:
-            ucs_result: Results from Uniform Cost Search
-            astar_result: Results from A* Search
-        """
+        """Make a chart comparing nodes expanded, time, and cost"""
         algorithms = ['UCS', 'A*']
         nodes_expanded = [ucs_result.nodes_expanded, astar_result.nodes_expanded]
         runtimes = [ucs_result.runtime, astar_result.runtime]
@@ -55,13 +45,7 @@ class ChartMaker:
         plt.close()
 
     def _add_value_labels(self, ax, bars):
-        """
-        Add value labels on top of bars.
-
-        Args:
-            ax: The axis to add labels to
-            bars: The bar objects
-        """
+        """Add numbers on top of bars"""
         for bar in bars:
             height = bar.get_height()
             ax.text(bar.get_x() + bar.get_width()/2., height,
