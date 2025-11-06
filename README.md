@@ -5,7 +5,7 @@ A Python project demonstrating Uniform Cost Search (UCS) and A* Search algorithm
 ## Quick Start
 
 ```bash
-git clone <your-repo-url>
+git clone <https://github.com/kleahila/CEN352-Artificial_Intelligence_Assignment1.git>
 cd ev-charging-station-finder
 python3 -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
